@@ -4,27 +4,14 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './config/db.js'
 import { clerkwebhooks } from './controllers/webhooks.js'
+import jobRoutes from './routes/jobRoutes.js'
+import applicationRoutes from './routes/applicationRoutes.js'
 
 // Initialize app
 const app = express()
-let dbConnected = false
 
-async function ensureDbConnection() {
-  if (!dbConnected) {
-    await connectDB()
-    dbConnected = true
-  }
-}
-
-// Connect DB before handling any request
-app.use(async (req, res, next) => {
-  try {
-    await ensureDbConnection()
-    next()
-  } catch (error) {
-    next(error)
-  }
-})
+// Connect to DB at startup
+connectDB()
 
 // Middlewares
 app.use(cors())
@@ -35,6 +22,8 @@ app.get('/', (req, res) => {
   res.send('API Working 🚀')
 })
 app.post('/webhooks',clerkwebhooks)
+app.use('/api/jobs', jobRoutes)
+app.use('/api/applications', applicationRoutes)
 
 // Optional custom error handler
 app.use((err, req, res, next) => {

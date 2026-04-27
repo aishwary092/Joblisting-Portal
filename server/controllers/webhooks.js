@@ -18,6 +18,8 @@ export const clerkwebhooks = async (req,res) => {
 
         // Getting data from request body
         const {data,type} = req.body
+        console.log('Webhook received:', type, data.id)
+
         // Switch case or different Events
         switch(type){
             case 'user.created':{
@@ -30,6 +32,7 @@ export const clerkwebhooks = async (req,res) => {
                     resume: ""
                 }
                 await User.create(userData)
+                console.log('User created:', data.id)
                 res.json({})
                 break;
             }
@@ -40,20 +43,23 @@ export const clerkwebhooks = async (req,res) => {
                     image:data.image_url,
                 }
                 await User.findByIdAndUpdate(data.id, userData)
+                console.log('User updated:', data.id)
                 res.json({})
                 break;
             }
             case 'user.deleted':{
                 await User.findByIdAndDelete(data.id)
+                console.log('User deleted:', data.id)
                 res.json({})
                 break;
             }
             default:
+                console.log('Unhandled event type:', type)
                 break;
         }
 
     } catch (error) {
-        console.log(error.message);
-        res.json({success:false,massage:'webhooks Error'})
+        console.log('Webhook error:', error.message);
+        res.json({success:false,message:'webhooks Error'})
     }
 }
