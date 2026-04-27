@@ -1,5 +1,4 @@
 // Must be first
-import './config/instrument.js'
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
@@ -36,11 +35,6 @@ app.get('/', (req, res) => {
   res.send('API Working 🚀')
 })
 app.post('/webhooks',clerkwebhooks)
-
-// Test Sentry error route
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
-});
 
 // Optional custom error handler
 app.use((err, req, res, next) => {
