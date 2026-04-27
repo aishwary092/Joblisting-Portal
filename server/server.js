@@ -32,9 +32,9 @@ app.get("/debug-sentry", function mainHandler(req, res) {
 Sentry.setupExpressErrorHandler(app)
 
 // Optional custom error handler
-app.use((err, req, res, next) => {
-  res.status(500).send('Something went wrong!')
-})
+// app.use((err, req, res, next) => {
+//   res.status(500).send('Something went wrong!')
+// })
 
 // Port
 const PORT = process.env.PORT || 5000
